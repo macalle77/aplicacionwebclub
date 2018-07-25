@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <% include header %>
+  </head>
+  <body>
+    <nav class="navbar navbar-expand-lg navbar-dark" style="color:#ffffff; background-color: #005500;">
+      <div class="container">
+       <a class="navbar-brand" href="home"><b><%=title%></b></a>
+         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+           <span class="navbar-toggler-icon"></span>
+         </button>
+         <div class="collapse navbar-collapse" id="navbarSupportedContent">
+           <ul class="navbar-nav mr-auto">
+             <li class="nav-item dropdown">
+                 <a class="nav-link dropdown-toogle" data-toggle="dropdown" href="/home?seccion=listado_actual">Gestión Participantes</a>
+                 <div class="dropdown-menu">
+                   <a class="dropdown-item" href="/home?seccion=listado_actual">Listado participantes</a>
+                   <a class="dropdown-item" href="/home?seccion=listado_pendientes">Usuarios no apuntados</a>
+                 </div>
+             </li>
+             <li class="nav-item dropdown">
+                 <a class="nav-link dropdown-toogle" data-toggle="dropdown" href="/home?seccion=listado_actividades">Gestión Actividades</a>
+                 <div class="dropdown-menu">
+                   <% if(actividadActiva!=1){%>
+                     <a class="dropdown-item" href="/home?seccion=nuevaactividad">Nueva Actividad</a>
+                   <%}%>
+                   <a class="dropdown-item" href="/home?seccion=listado_actividades">Listado actividades</a>
+                   <a class="dropdown-item" href="/home?seccion=gestionar">Actividad actual</a>
+                 </div>
+             </li>
+              <li class="nav-item"><a class="nav-link" href="/home?seccion=listado_monitores">Listado Monitores</a></li>
+              <li class="nav-item"><a class="nav-link" href="/home?seccion=nuevo">Nuevo Participante</a></li>
+              <li class="nav-item"><a class="nav-link" href="/signout">Cerrar Sesión</a></li>
+           </ul>
+         </div>
+       </div>
+     </nav>
+    <div class="container">
+      <!--<form action="/filtrar" method="post">
+        <legend>Buscar Usuario</legend>
+        <div class="form-group">
+            <label for="dni" class="col-form-label">Dni</label>
+            <input type="text" id="dni" class="form-control" name="dni"/>
+        </div>
+        <div class="form-group">
+          <label for="nombre" class="col-form-label">Nombre</label>
+          <input type="text" id="nombre" class="form-control" name="nombre"/>
+        </div>
+        <div class="form-group">
+          <label for="apellidos" class="col-form-label">Apellidos</label>
+          <input type="text" id="apellidos" class="form-control" name="apellidos"/>
+        </div>
+        <button class="btn btn-primary" type="submit">Filtrar</button>
+      </form>-->
+      <!--<div class="form-group">
+         <input type="text" class="form-control pull-right" style="width:40%" id="search" placeholder="Escribe para buscar en la tabla...">
+      </div>
+      </hr>
+      <div class="table-responsive">-->
+      <% valor=accion%>
+      <!--<table class="table table-bordered table-hover table-condensed" id="tablalistado">-->
+      <table class="table table-striped table-responsive table-hover table-bordered display AllDataTables">
+        <thead>
+          <tr>
+            <%if(valor=='activos'){%>
+            <th>Confirmar firma</th>
+            <th>Confirmar pago</th>
+            <th>Confirmar asistencia</th>
+            <th>Gestionar</th>
+            <%}%>
+            <%if(valor=='pendientes'){%>
+            <th>Gestionar</th>
+            <%}%>
+            <th>#</th>
+            <!--<th>DNI</th>-->
+            <th>Nombre</th>
+            <th>Apellidos</th>
+            <th>Teléfono</th>
+            <th>Dirección</th>
+            <th>Email</th>
+            <th>Actualizar</th>
+          </tr>
+        </thead>
+        <tbody>
+            <% for (var i = 0; i < users.length; i++) { %>
+              <% if (users[i].perfil=='participante'){%>
+                <tr>
+                    <%if (valor=='activos'){%>
+                    <td><a id="firmado" class="<%= users[i].firmado==1 ? 'btn btn-success':'btn btn-dark'%>" href="#">Firmado</a></td>
+                    <td><a id="pagado" class="<%= users[i].pagado==1 ? 'btn btn-success':'btn btn-dark'%>" href="/confirmarpago/<%= users[i].dni%>">Pagado</a></td>
+                    <td><a id="asiste" class="<%= users[i].asiste==1 ? 'btn btn-success':'btn btn-dark'%>" href="/confirmarasistenciaactividad/<%= users[i].dni%>">Asiste</a></td>
+                    <td><a id="apuntado" class="<%=  true ? 'btn btn-success':'btn btn-dark'%>" href="/darbajaactividad/<%= users[i].dni%>">Dar de baja</a></td>
+                    <%}%>
+                    <%if (valor=='pendientes'){%>
+                    <td><a id="pendiente" class="<%=  true ? 'btn btn-success':'btn btn-dark'%>" href="/asignaractividad/<%= users[i].dni%>">Dar de alta</a></td>
+                    <%}%>
+                    <td><%= i + 1 %></td>
+                    <!--<td><%= users[i].dni %></td>-->
+                    <td><%= users[i].nombre %></td>
+                    <td><%= users[i].apellidos %></td>
+                    <td><%= users[i].telefono %></td>
+                    <td><%= users[i].direccion %></td>
+                    <td><%= users[i].email %></td>
+                    <td><button type="button" class="btn btn-primary btn-xs" data-toggle="modal" data-target="#editModal<%= users[i].dni%>" data-id="#editModal<%= users[i].dni%>">Actualizar</button></td>
+                    <!--<td><a id="firmado" class="<%= users[i].firmado ? 'btn btn-success':'btn btn-dark'%>" href="/firmadouser/<%= users[i].dni%>">Firmado</a></td>-->
+                    <div class="modal fade bs-example-modal-sm" id="editModal<%= users[i].dni%>" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                     <div class="modal-dialog modal-lg" role="document">
+                         <div class="modal-content">
+                             <div class="modal-header">
+                               <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                               <h4 class="modal-title" id="exampleModalLabel">Actualizar</h4>
+                             </div>
+                             <div class="modal-body">
+                                <form method="post" action="/updateuser">
+                                   <div class="form-group">
+                                      <label for="dninew" class="col-form-label">Dni</label>
+                                      <input type="text" name="dninew" id="dninew" class="form-control" value="<%= users[i].dni %>" required autofocus/>
+                                    </div>
+                                    <div class="form-group">
+                                       <label for="nombre" class="col-form-label">Nombre</label>
+                                       <input type="text" name="nombre" id="nombre" value="<%= users[i].nombre %>" class="form-control" required/>
+                                    </div>
+                                     <div class="form-group">
+                                        <label for="apellidos" class="col-form-label">Apellidos</label>
+                                        <input type="text" name="apellidos" id="apellidos" value="<%= users[i].apellidos %>" class="form-control" required/>
+                                      </div>
+                                      <div class="form-group">
+                                         <label for="email" class="col-form-label">Email</label>
+                                         <input type="email" name="email" id="email" class="form-control" value="<%= users[i].email %>" required/>
+                                       </div>
+                                       <div class="form-group">
+                                          <label for="telefono" class="col-form-label">Teléfono</label>
+                                          <input type="text" name="telefono" id="telefono" class="form-control" value="<%= users[i].telefono %>" required/>
+                                       </div>
+                                       <div class="form-group">
+                                           <label for="direccion" class="col-lg-2 col-form-label">Dirección</label>
+                                           <input type="text" name="direccion" id="direccion" class="form-control" value="<%= users[i].direccion %>" required/>
+                                       </div>
+                             <div class="modal-footer">
+                                   <input type="hidden" name="tipo_listado" value="<%= tipo_listado%>"/>
+                                   <input type="hidden" name="dni" value="<%= users[i].dni %>"/>
+                                   <button type="button" class="btn btn-default" name="btncan" data-dismiss="modal">Cancelar</button>
+                                   <button type="submit" class="btn btn-primary"name="btnMod">Guardar</button>
+                             </div>
+                             </form>
+                            </div>
+                         </div>
+                   </div>
+                  </div>
+                </tr>
+              <%}%>
+            <%}%>
+        </tbody>
+      </table>
+    <!--</div>-->
+    </div>
+    <div class="modal fade" id="borrarModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                Confimar eliminación del usuario
+            </div>
+            <div class="modal-body">
+                ¿Estás seguro que vas a eliminar a este usuario?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+                <a class="btn btn-danger btn-ok">Borrar</a>
+            </div>
+        </div>
+    </div>
+  </div>
+  <% include footer %>
+  <script>
+  $('#borrarModal').on('show.bs.modal', function(e) {
+    $(this).find('.btn-ok').attr('href', $(e.relatedTarget).data('href'));
+  });
+
+  // Write on keyup event of keyword input element
+  $(document).ready(function(){
+    $("#search").keyup(function(){
+       _this = this;
+       // Show only matching TR, hide rest of them
+         $.each($("#tablalistado tbody tr"), function() {
+           if($(this).text().toLowerCase().indexOf($(_this).val().toLowerCase()) === -1)
+             $(this).hide();
+           else
+             $(this).show();
+         });
+     });
+  });
+  </script>
+  <script src="/js/jquery.dataTables.min.js"></script>
+  <script src="/js/dataTables.bootstrap4.min.js"></script>
+  <script>
+      $(document).ready( function () {
+          $('.AllDataTables').DataTable({
+             language: {
+                   "sProcessing":     "Procesando...",
+                   "sLengthMenu":     "Mostrar _MENU_ registros",
+                   "sZeroRecords":    "No se encontraron resultados",
+                   "sEmptyTable":     "Ningún dato disponible en esta tabla",
+                   "sInfo":           "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
+                   "sInfoEmpty":      "Mostrando registros del 0 al 0 de un total de 0 registros",
+                   "sInfoFiltered":   "(filtrado de un total de _MAX_ registros)",
+                   "sInfoPostFix":    "",
+                   "sSearch":         "Buscar:",
+                   "sUrl":            "",
+                   "sInfoThousands":  ",",
+                   "sLoadingRecords": "Cargando...",
+                   "oPaginate": {
+                       "sFirst":    "Primero",
+                       "sLast":     "Último",
+                       "sNext":     "Siguiente",
+                       "sPrevious": "Anterior"
+                   },
+                   "oAria": {
+                       "sSortAscending":  ": Activar para ordenar la columna de manera ascendente",
+                       "sSortDescending": ": Activar para ordenar la columna de manera descendente"
+                   }
+             }
+          });
+      } );
+  </script>
+  </body>
+</html>

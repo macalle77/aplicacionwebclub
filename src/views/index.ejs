@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Club Montaña</title>
+    <link href="/stylesheet/bootstrap.min.css" rel="stylesheet">
+    <link href="/stylesheet/style.css" rel="stylesheet">
+    <!--<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.3/css/bootstrap.min.css" integrity="sha384-Zug+QiDoJOrZ5t4lssLdxGhVrurbmBWopoEl+M6BdEfwnCJZtKxi1KgxUyJq13dy" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.3/js/bootstrap.min.js" integrity="sha384-a5N7Y/aK3qNeh15eJKGWxsqtnX/wWdSZSKp+81YjTmS15nvnvxKHuzaWwXHDli+4" crossorigin="anonymous"></script>-->
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.1/css/font-awesome.min.css" rel="stylesheet" >
+    <link href="https://fonts.googleapis.com/css?family=Oswald" rel="stylesheet">
+  </head>
+  <body>
+    <div class="container">
+          <div class="row">
+            <div class="col-md-3"></div>
+            <div class="col-md-6"><h1 style="font-family: 'Oswald', sans-serif">Acceso a la aplicación del club de montaña</h1></div>
+            <div class="col-md-3"></div>
+          </div>
+         <form class="form-horizontal" role="form" method="POST" action="/login">
+             <div class="row">
+                 <div class="col-md-3"></div>
+                 <div class="col-md-6">
+                     <h5>Introduzca su email y contraseña de acceso</h5>
+                     <hr>
+                 </div>
+                 <div class="col-md-3"></div>
+             </div>
+             <div class="row">
+                 <div class="col-md-3"></div>
+                 <div class="col-md-6">
+                     <div class="form-group has-danger">
+                         <label class="sr-only" for="username">E-Mail:</label>
+                         <div class="input-group mb-2 mr-sm-2 mb-sm-0">
+                           <div class="input-group-addon" style="width:2.6rem"><i class="fa fa-at"></i></div>
+                           <input type="text" name="username" class="form-control" id="username" placeholder="tu@ejemplo.com" required autofocus>
+                         </div>
+                     </div>
+                 </div>
+                 <div class="col-md-3">
+                 </div>
+             </div>
+             <div class="row">
+                 <div class="col-md-3"></div>
+                 <div class="col-md-6">
+                     <div class="form-group">
+                         <label class="sr-only" for="password">Contraseña:</label>
+                         <div class="input-group mb-2 mr-sm-2 mb-sm-0">
+                             <div class="input-group-prepend" style="width:2.6rem"><i class="fa fa-key"></i></div>
+                             <input type="password" name="password" class="form-control" id="password"
+                                    placeholder="contraseña" required>
+                         </div>
+                     </div>
+                 </div>
+                 <div class="col-md-3"></div>
+             </div>
+             <!--<div class="row">
+                 <div class="col-md-3"></div>
+                 <div class="col-md-6" style="padding-top: .35rem">
+                     <div class="form-check mb-2 mr-sm-2 mb-sm-0">
+                         <label class="form-check-label">
+                             <input class="form-check-input" name="remember"
+                                    type="checkbox" >
+                             <span style="padding-bottom: .15rem">Recordar contraseña</span>
+                         </label>
+                     </div>
+                 </div>
+                 <div class="col-md-3">
+                     <div class="form-control-feedback">
+                         <span class="text-danger align-middle">
+                         <!-- Put password error message here
+                         </span>
+                     </div>
+                 </div>
+             </div>-->
+             <div class="row" style="padding-top: 1rem">
+                 <div class="col-md-3"></div>
+                 <div class="col-md-6">
+                     <button type="submit" class="btn btn-success"><i class="fa fa-sign-in"></i> Login</button>
+                     <a class="btn btn-link" href="/recordaruser">¿Olvidaste tu contraseña?</a>
+                 </div>
+                 <div class="col-md-3"></div>
+             </div>
+         </form>
+         <div class="row">
+           <div class="col-md-3"></div>
+           <div class="col-md-6">
+             <%if(actividad==null){%>
+             <h1 style="font-family: 'Oswald', sans-serif">
+                 Actualmente no hay ninguna actividad en activo.
+             </h1>
+             <%}else{%>
+             <h1 style="font-family: 'Oswald', sans-serif">
+                 Próxima actividad <%= actividad.titulo%> </br>
+                 el <%= fecha%>
+             </h1>
+             <%}%>
+           </div>
+           <div class="col-md-3"></div>
+         </div>
+         <%if(message!=""){%>
+         <div class="row">
+           <div class="col-md-3"></div>
+           <div class="col-md-6">
+               <div class="card text-white bg-danger mb-3" style="max-width: 18rem;">
+                  <div class="card-header">Aviso</div>
+                    <div class="card-body">
+                        <h5 class="card-title"><%= message %></h5>
+                        <p class="card-text">Por favor acercate a la sede del club y date de alta como socio ó apuntate a las actividades desde allí, sino lo has hecho ya!!.</p>
+                    </div>
+              </div>
+            </div>
+            <div class="col-md-3"></div>
+          </div>
+        <%}%>
+     </div>
+    <%include footer%>
+  </body>
+</html>

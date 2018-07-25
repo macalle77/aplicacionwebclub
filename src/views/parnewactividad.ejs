@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <% include header %>
+  </head>
+  <body>
+    <nav class="navbar navbar-expand-lg navbar-dark" style="color:#ffffff; background-color: #005500;">
+      <div class="container">
+       <a class="navbar-brand" href="home"><b><%=title%></b></a>
+         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+           <span class="navbar-toggler-icon"></span>
+         </button>
+         <div class="collapse navbar-collapse" id="navbarSupportedContent">
+           <ul class="navbar-nav mr-auto">
+              <li class="nav-item"><a class="nav-link" href="/home?seccion=gestionar">Datos Personales</a></li>
+              <%if (existe==1){%><li class="nav-item active"><a class="nav-link" href="/home?seccion=nuevaactividad">Participación en Actividad<span class="sr-only">(current)</span></a></li><%}%>
+              <li class="nav-item"><a class="nav-link" href="/home?seccion=veractividad">Información Actividad</a></li>
+              <li class="nav-item"><a class="nav-link" href="/signout">Cerrar Sesión</a></li>
+           </ul>
+         </div>
+       </div>
+     </nav>
+    <div class="container">
+    <%if(titulo!="no" || existe==1){%>
+            <form class="form-signin" action="/condicionesactividad" method="POST">
+              <h2>Aceptar condiciones y normas</h2>
+              <h3>La actividad sobre la que aceptas las siguientes normas y condiciones de participación es:</h3>
+              <h3><%= titulo%></h3>
+              <div class="form-group row">
+                <div class="col-lg-12">
+                    <h4>Condiciones y normas</h4>
+                    <p>Ten en cuenta que debes de aceptar las condiciones de participación para poder participar
+                    en la actividad. Esto es igual que firmar</p>
+                </div>
+              </div>
+              <div class="form-group row">
+                <div class="col-lg-12">
+                    <h4>Aceptar las condiciones:</h4>
+                    <p>Ten en cuenta que debes de aceptar las condiciones de participación para poder participar
+                    en la actividad. Esto es igual que firmar</p>
+                    <h4>Dejar de participar:</h4>
+                    <p>Si por algún motivo finalmente no puedes venir a la actividad por favor selecciona está opción
+                    para darte de baja de la misma.</p>
+                </div>
+              </div>
+              <div class="form-group row">
+                <%if(firmado=="0" && existe==1){%>
+                  <div class="col-lg-12">
+                      <button class="btn btn-lg btn-primary btn-block" type="submit" name="aceptar" value="aceptar">Aceptar condiciones</button>
+                  </div>
+                <%}%>
+                <%if(firmado=="1" && existe==1){%>
+                  <div class="col-lg-12">
+                      <button class="btn btn-lg btn-primary btn-block" type="submit" name="aceptar" value="dejar">Dejar de participar</button>
+                  </div>
+                <%}%>
+              </div>
+            </form>
+            <% if(mensajeRegistro && mensajeRegistro.length>0){%>
+            <div class="form-group row">
+              <div class="col-lg-12">
+                <div class="alert alert-success" role"alert">
+                  <%= mensajeRegistro %>
+                </diV>
+              </div>
+            </div>
+            <% }%>
+            <% if(mensajeRegistroError && mensajeRegistroError.length>0){%>
+            <div class="form-group row">
+              <div class="col-lg-12">
+                <div class="alert alert-danger" role"alert">
+                  <%= mensajeRegistroError %>
+                </diV>
+              </div>
+            </div>
+            <% }%>
+          <%}
+          else if(titulo=="no"){%>
+            <div class="form-group row">
+              <div class="col-lg-12">
+                <div class="alert alert-danger" role"alert">
+                  <h1>NO HAY NINGUNA ACTIVIDAD PROGRAMADA EN ESTE MOMENTO.</h1>
+                </div>
+              </div>
+            </div>
+       <%}else{%>
+            <div class="form-group row">
+              <div class="col-lg-12">
+                <div class="alert alert-danger" role"alert">
+                  <h1>NO ESTAS DADO DE ALTA EN LA ACTIVIDAD.</h1>
+                </div>
+              </div>
+            </div>
+        <%}%>
+      </div>
+  <% include footer %>
+  </body>
+</html>

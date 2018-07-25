@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <% include header %>
+  </head>
+  <body>
+        <nav class="navbar navbar-expand-lg navbar-dark" style="color:#ffffff; background-color: #005500;">
+          <div class="container">
+           <a class="navbar-brand" href="home"><b><%=title%></b></a>
+             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+               <span class="navbar-toggler-icon"></span>
+             </button>
+             <div class="collapse navbar-collapse" id="navbarSupportedContent">
+               <ul class="navbar-nav mr-auto">
+                 <li class="nav-item dropdown">
+                     <a class="nav-link dropdown-toogle" data-toggle="dropdown" href="/home?seccion=listado_actual">Gestión Participantes</a>
+                     <div class="dropdown-menu">
+                       <a class="dropdown-item" href="/home?seccion=listado_actual">Listado participantes</a>
+                       <a class="dropdown-item" href="/home?seccion=listado_pendientes">Usuarios no apuntados</a>
+                     </div>
+                 </li>
+                 <li class="nav-item dropdown">
+                     <a class="nav-link dropdown-toogle" data-toggle="dropdown" href="/home?seccion=listado_actividades">Gestión Actividades</a>
+                     <div class="dropdown-menu">
+                       <% if(actividadActiva!=1){%>
+                         <a class="dropdown-item" href="/home?seccion=nuevaactividad">Nueva Actividad</a>
+                       <%}%>
+                       <a class="dropdown-item" href="/home?seccion=listado_actividades">Listado actividades</a>
+                       <a class="dropdown-item" href="/home?seccion=gestionar">Actividad actual</a>
+                     </div>
+                 </li>
+                  <li class="nav-item"><a class="nav-link" href="/home?seccion=listado_monitores">Listado Monitores</a></li>
+                  <li class="nav-item"><a class="nav-link" href="/home?seccion=nuevo">Nuevo Participante</a></li>
+                  <li class="nav-item"><a class="nav-link" href="/signout">Cerrar Sesión</a></li>
+               </ul>
+             </div>
+           </div>
+         </nav>
+         <% if(message){%>
+           <div class="alert alert-danger" role"alert">
+                 <%= message %>
+           </div>
+         <%}%>
+         <div class="container">
+           <h1 class="text-center login-title">Nueva Actividad</h1>
+            <form class="form-signin" action="/nuevaactividad" method="POST">
+              <div class="form-group row">
+                 <label for="titulo" class="col-lg-2 col-form-label">Titulo</label>
+                 <div class="col-lg-10">
+                     <input type="text" id="titulo" name="titulo" class="form-control" placeholder="Titulo de la actividad" required autofocus/>
+                 </div>
+               </div>
+               <div class="form-group row">
+                  <label for="descripcion" class="col-lg-2 col-form-label">Descripción</label>
+                  <div class="col-lg-10">
+                      <textarea name="descripcion" id="descripcion" class="form-control" rows="4" cols="80" placeholder="Descripción de la actividad" required/></textarea>
+                  </div>
+                </div>
+                <div class="form-group row">
+                   <label for="requisitos" class="col-lg-2 col-form-label">Requisitos</label>
+                   <div class="col-lg-10">
+                       <textarea name="requisitos" id="requisitos" class="form-control" rows="4" cols="80" placeholder="Requisitos de la actividad" required/></textarea>
+                   </div>
+                 </div>
+                 <div class="form-group row">
+                    <label for="fecha" class="col-lg-2 col-form-label">Fecha Actividad</label>
+                    <div class="col-lg-10">
+                      <input type="date" name="fecha" id="fecha" required/><br/>
+                    </div>
+                  </div>
+                 <fieldset>
+                  <legend>Periodo para apuntarse</legend>
+                  <div class="form-group row">
+                     <label for="inicio" class="col-lg-2 col-form-label">Fecha Inicio</label>
+                     <div class="col-lg-10">
+                       <input type="date" name="inicio" id="inicio" required/><br/>
+                     </div>
+                   </div>
+                   <div class="form-group row">
+                      <label for="fin" class="col-lg-2 col-form-label">Fecha Fin</label>
+                      <div class="col-lg-10">
+                        <input type="date" name="fin" id="fin" required/><br/>
+                      </div>
+                    </div>
+                  </fieldset>
+                    <div class="form-group row">
+                        <div class="col-lg-6">
+                          <button class="btn btn-lg btn-primary btn-block" type="submit">Nueva</button>
+                        </div>
+                        <div class="col-lg-6">
+                          <button class="btn btn-lg btn-primary btn-block" type="reset">Cancelar</button>
+                        </div>
+                    </div>
+            </form>
+            <form class="form-signin" action="/listadomonitores" method="POST">
+               <button class="btn btn-lg btn-primary btn-block" type="submit">Listado de Monitores que organizan actividad</button>
+            </form>
+           </div>
+    <% include footer %>
+  </body>
+</html>

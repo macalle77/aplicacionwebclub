@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <% include header %>
+  </head>
+  <body>
+    <nav class="navbar navbar-expand-lg navbar-dark" style="color:#ffffff; background-color: #005500;">
+      <div class="container">
+       <a class="navbar-brand" href="home"><b><%=title%></b></a>
+         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+           <span class="navbar-toggler-icon"></span>
+         </button>
+         <div class="collapse navbar-collapse" id="navbarSupportedContent">
+           <ul class="navbar-nav mr-auto">
+             <li class="nav-item dropdown">
+                 <a class="nav-link dropdown-toogle" data-toggle="dropdown" href="/home?seccion=listado_actual">Gestión Participantes</a>
+                 <div class="dropdown-menu">
+                   <a class="dropdown-item" href="/home?seccion=listado_actual">Listado participantes</a>
+                   <a class="dropdown-item" href="/home?seccion=listado_pendientes">Usuarios no apuntados</a>
+                 </div>
+             </li>
+             <li class="nav-item dropdown">
+                 <a class="nav-link dropdown-toogle" data-toggle="dropdown" href="/home?seccion=listado_actividades">Gestión Actividades</a>
+                 <div class="dropdown-menu">
+                   <% if(actividadActiva!=1){%>
+                     <a class="dropdown-item" href="/home?seccion=nuevaactividad">Nueva Actividad</a>
+                   <%}%>
+                   <a class="dropdown-item" href="/home?seccion=listado_actividades">Listado actividades</a>
+                   <a class="dropdown-item" href="/home?seccion=gestionar">Actividad actual</a>
+                 </div>
+             </li>
+              <li class="nav-item"><a class="nav-link" href="/home?seccion=listado_monitores">Listado Monitores</a></li>
+              <li class="nav-item"><a class="nav-link" href="/home?seccion=nuevo">Nuevo Participante</a></li>
+              <li class="nav-item"><a class="nav-link" href="/signout">Cerrar Sesión</a></li>
+           </ul>
+         </div>
+       </div>
+     </nav>
+    <div class="container">
+      <!--<form action="/filtrar" method="post">
+        <legend>Buscar Actividad</legend>
+        <div class="form-group">
+            <input type="text" id="titulo" class="form-control" name="titulo"/>
+        </div>
+        <div class="form-group">
+          <input type="text" id="descripcion" class="form-control" name="descripcion"/>
+        </div>
+        <div class="form-group">
+          <input type="text" id="fecha" class="form-control" name="fecha"/>
+        </div>
+        <button class="btn btn-primary">
+           Filtrar
+        </button>
+      </form>-->
+      <form action="/filtrarfecha" method="post" name="filtrofecha">
+       <fieldset>
+       <legend>Busqueda por fecha de la actividad</legend>
+       <div class="form-group row">
+          <label for="desde" class="col-lg-2 col-form-label">Desde:</label>
+          <div class="col-lg-10">
+            <input type="date" name="desde" id="desde" required/><br/>
+          </div>
+        </div>
+        <div class="form-group row">
+           <label for="hasta" class="col-lg-2 col-form-label">Hasta:</label>
+           <div class="col-lg-10">
+             <input type="date" name="hasta" id="hasta" required/><br/>
+           </div>
+         </div>
+         <button type="submit" class="btn btn-primary"name="btnMod">Filtrar por fecha</button>
+       </fieldset>
+      </form>
+      <br/>
+      <!--</br>
+      <div class="form-group">
+         <input type="text" class="form-control pull-right" style="width:40%" id="search" placeholder="Escribe para buscar en la tabla por el título...">
+      </div>
+      </hr>
+      <div class="table-responsive">-->
+      <table class="table table-striped table-responsive table-hover table-bordered display AllDataTables">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Titulo</th>
+            <th>Fecha</th>
+            <th>Información de Actividad</th>
+          </tr>
+        </thead>
+        <tbody>
+            <% for (var i = 0; i < actividades.length; i++) {
+            var fecha_actividad=moment(actividades[i].fecha).format('YYYY-MM-DD')%>
+                  <tr>
+                    <td><%= i + 1 %></td>
+                    <td><%= actividades[i].titulo %></td>
+                    <td><%= fecha_actividad %></td>
+                    <td><button type="button" class="btn btn-primary btn-xs" data-toggle="modal" data-id="#informacionModal<%= actividades[i].id_actividad%>" data-target="#informacionModal<%= actividades[i].id_actividad%>">Información Actividad</button></td>
+                  </tr>
+                  <div class="modal fade bs-example-modal-sm" id="informacionModal<%= actividades[i].id_actividad%>" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                   <div class="modal-dialog modal-lg" role="document">
+                       <div class="modal-content">
+                           <div class="modal-header">
+                             <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                             <h4 class="modal-title" id="exampleModalLabel">Información de la actividad</h4>
+                           </div>
+                           <div class="modal-body">
+                              <form method="post" action="listado_actividades">
+                                 <div class="form-group">
+                                    <label for="titulo" class="col-form-label">Titulo</label>
+                                    <input type="text" name="titulo" id="titulo" class="form-control" value="<%= actividades[i].titulo %>" readonly/>
+                                  </div>
+                                  <div class="form-group">
+                                     <label for="descripcion" class="col-form-label">Descripción</label>
+                                     <textarea cols="80" rows="10" name="descripcion" id="descripcion" class="form-control" readonly><%= actividades[i].descripcion %></textarea>
+                                  </div>
+                                  <div class="form-group">
+                                     <label for="requisitos" class="col-form-label">Requisitos</label>
+                                     <textarea cols="80" rows="10" name="requisitos" id="requisitos" class="form-control" readonly><%= actividades[i].requisitos %></textarea>
+                                  </div>
+                                    <div class="form-group">
+                                      <label for="fecha" class="col-form-label">Fecha Actividad</label>
+                                      <input type="date" name="fecha" id="fecha" value="<%=fecha_actividad%>" readonly />
+                                    </div>
+                                   <div class="modal-footer">
+                                     <input type="hidden" name="tipo_listado" value="<%= tipo_listado%>"/>
+                                     <button type="submit" class="btn btn-primary"name="btnMod">Aceptar</button>
+                                 </div>
+                           </form>
+                          </div>
+                       </div>
+                 </div>
+                </div>
+              <% } %>
+        </tbody>
+      </table>
+    <!--</div>-->
+    </div>
+  <% include footer %>
+  <script>
+  // Write on keyup event of keyword input element
+  $(document).ready(function(){
+    $("#search").keyup(function(){
+       _this = this;
+       // Show only matching TR, hide rest of them
+         $.each($("#tablalistado tbody tr"), function() {
+           if($(this).text().toLowerCase().indexOf($(_this).val().toLowerCase()) === -1)
+             $(this).hide();
+           else
+             $(this).show();
+         });
+     });
+  });
+  </script>
+  <script src="/js/jquery.dataTables.min.js"></script>
+  <script src="/js/dataTables.bootstrap4.min.js"></script>
+  <script>
+      $(document).ready( function () {
+          $('.AllDataTables').DataTable({
+             language: {
+                   "sProcessing":     "Procesando...",
+                   "sLengthMenu":     "Mostrar _MENU_ registros",
+                   "sZeroRecords":    "No se encontraron resultados",
+                   "sEmptyTable":     "Ningún dato disponible en esta tabla",
+                   "sInfo":           "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
+                   "sInfoEmpty":      "Mostrando registros del 0 al 0 de un total de 0 registros",
+                   "sInfoFiltered":   "(filtrado de un total de _MAX_ registros)",
+                   "sInfoPostFix":    "",
+                   "sSearch":         "Buscar:",
+                   "sUrl":            "",
+                   "sInfoThousands":  ",",
+                   "sLoadingRecords": "Cargando...",
+                   "oPaginate": {
+                       "sFirst":    "Primero",
+                       "sLast":     "Último",
+                       "sNext":     "Siguiente",
+                       "sPrevious": "Anterior"
+                   },
+                   "oAria": {
+                       "sSortAscending":  ": Activar para ordenar la columna de manera ascendente",
+                       "sSortDescending": ": Activar para ordenar la columna de manera descendente"
+                   }
+             }
+          });
+      } );
+  </script>
+  </body>
+</html>

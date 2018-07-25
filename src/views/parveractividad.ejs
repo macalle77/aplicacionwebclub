@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <% include header %>
+  </head>
+  <body>
+    <nav class="navbar navbar-expand-lg navbar-dark" style="color:#ffffff; background-color: #005500;">
+      <div class="container">
+       <a class="navbar-brand" href="home"><b><%=title%></b></a>
+         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+           <span class="navbar-toggler-icon"></span>
+         </button>
+         <div class="collapse navbar-collapse" id="navbarSupportedContent">
+           <ul class="navbar-nav mr-auto">
+              <li class="nav-item"><a class="nav-link" href="/home?seccion=gestionar">Datos Personales</a></li>
+              <%if (existe==1){%><li class="nav-item active"><a class="nav-link" href="/home?seccion=nuevaactividad">Participación en Actividad</a></li><%}%>
+              <li class="nav-item active"><a class="nav-link" href="/home?seccion=veractividad">Información Actividad<span class="sr-only">(current)</span></a></li>
+              <li class="nav-item"><a class="nav-link" href="/signout">Cerrar Sesión</a></li>
+           </ul>
+         </div>
+       </div>
+     </nav>
+    <div class="container">
+       <h2>Información de la actividad actualmente en curso. <%= actividad.titulo%></h2>
+       <div class="form-group row">
+          <label for="descripcion" class="col-lg-2 col-form-label">Descripción de la actividad</label>
+          <div class="col-lg-10">
+              <textarea name="descripcion" id="descripcion" class="form-control" rows="6" cols="80" placeholder="Descripción de la actividad" readonly />
+                <%= actividad.descripcion%>
+              </textarea>
+          </div>
+        </div>
+        <div class="form-group row">
+           <label for="requisitos" class="col-lg-2 col-form-label">Requisitos de la actividad</label>
+           <div class="col-lg-10">
+               <textarea name="requisitos" id="requisitos" class="form-control" rows="6" cols="80" placeholder="Requisitos de la actividad" readonly />
+                  <%= actividad.requisitos%>
+               </textarea>
+           </div>
+         </div>
+          <div class="form-group row">
+             <label for="inicio" class="col-lg-2 col-form-label">Fecha Actividad</label>
+             <div class="col-lg-10">
+               <input type="date" name="fecha_actividad" id="fecha_actividad" value="<%=fecha_actividad%>" readonly /><br/>
+             </div>
+           </div>
+           <% if(mensajeRegistro && mensajeRegistro.length>0){%>
+           <div class="form-group row">
+             <div class="col-lg-12">
+               <div class="alert alert-success" role"alert">
+                 <%= mensajeRegistro %>
+               </diV>
+             </div>
+           </div>
+           <% }%>
+           <% if(mensajeRegistroError && mensajeRegistroError.length>0){%>
+           <div class="form-group row">
+             <div class="col-lg-12">
+               <div class="alert alert-danger" role"alert">
+                 <%= mensajeRegistroError %>
+               </diV>
+             </div>
+           </div>
+           <% }%>
+    </div>
+  <% include footer %>
+  </body>
+</html>
